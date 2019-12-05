@@ -1,0 +1,515 @@
+package com.bridgelabz.utility;
+
+import java.util.Scanner;
+
+public class Utility {
+    static Scanner sc = new Scanner(System.in);
+
+    public static int inputNumber() {
+        return sc.nextInt();
+    }
+
+    public static String inputString() {
+        return sc.next();
+    }
+}
+==========================================================================================
+============================================================
+uc2
+
+package com.bridgelabz.utility;
+
+import com.bridgelabz.model.Person;
+
+import java.util.List;
+import java.util.Scanner;
+
+public class Utility {
+    static Scanner sc = new Scanner(System.in);
+
+    public static int inputNumber() {
+        return sc.nextInt();
+    }
+
+    public static String inputString() {
+        return sc.next();
+    }
+
+    public static void operation(List<Person> list) {
+
+    }
+}
+===================================================================
+2-------1
+
+package com.bridgelabz.utility;
+
+import java.util.Scanner;
+
+public class Utility {
+    static Scanner sc = new Scanner(System.in);
+
+    public static int inputNumber() {
+        return sc.nextInt();
+    }
+
+    public static String inputString() {
+        return sc.next();
+    }
+}
+==================================================================
+2---------------2
+package com.bridgelabz.utility;
+
+import com.bridgelabz.model.Address;
+import com.bridgelabz.model.Person;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.simple.JSONArray;
+import org.json.simple.parser.JSONParser;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class Utility {
+    static Scanner sc = new Scanner(System.in);
+
+    public static int inputNumber() {
+        return sc.nextInt();
+    }
+
+    public static String inputString() {
+        return sc.next();
+    }
+
+    static List<Person> list = new ArrayList<>();
+    static Person person = new Person();
+    static Address address = new Address();
+    static ObjectMapper mapper = new ObjectMapper();
+
+    public static boolean operation(List<Person> receiveList, String name) throws IOException {
+        int choice = 0;
+        Boolean result = null;
+        do {
+            System.out.println("***********Operation of User***********");
+            System.out.println("1.Add\n2.Edit\n9.Exit");
+            choice = 2;
+            switch (choice) {
+                case 1:
+                    System.out.println("Add USer");
+                    result = addUser(name);
+                    choice = 9;
+                    break;
+                case 2:
+                    System.out.println("Edit USer");
+                    result = editUser(name);
+                    choice = 9;
+                    break;
+
+
+                case 9:
+                    System.out.println("Exiting");
+
+                    break;
+                default:
+                    System.out.println("Invalid Input Please Enter Correct Choice");
+            }
+
+        } while (choice != 9);
+        return result;
+    }
+
+
+    private static Boolean addUser(String name) {
+        String firstName = "Jack";
+        String lastName = "Sparrow";
+        String mobNo = "9876543210";
+        String city = "NewYork";
+        String state = "Uk";
+        String zip = "101010";
+
+        person.setFirstName(firstName);
+        person.setLastName(lastName);
+        person.setMobNo(mobNo);
+        address.setCity(city);
+        address.setState(state);
+        address.setState(zip);
+
+
+        Person temp = new Person(firstName, lastName, mobNo, new Address(city, zip, state));
+        list.add(temp);
+        ObjectMapper mapper = new ObjectMapper();
+        String json = "[";
+        JSONParser parser = new JSONParser();
+        try {
+            File file = new File("/home/admin141/IdeaProjects/AddressBook/src/main/resources/" + name + ".json");
+            // if the file is empty
+            if (file.length() == 0) {
+                json = json + mapper.writeValueAsString(temp) + "]";
+            }
+            {
+                // read the data from file
+                Object object = parser.parse(new FileReader("/home/admin141/IdeaProjects/AddressBook/src/main/resources/" + name + ".json"));
+                JSONArray array = new JSONArray();
+                array = (JSONArray) object;
+                for (int j = 0; j < array.size(); j++) {
+                    json = json + array.get(j) + ",";
+                    // System.out.println(json);
+                }
+                json = json + mapper.writeValueAsString(temp) + "]";
+                System.out.println(json);
+            }
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        } catch (org.json.simple.parser.ParseException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            FileWriter file = new FileWriter(
+                    "/home/admin141/IdeaProjects/AddressBook/src/main/resources/" + name + ".json");
+            file.write(json);
+            file.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    private static Boolean editUser(String name) throws IOException {
+        int i = 0;
+        String editName = "Jack";
+
+        //System.out.println("Enter User Edited Mobile Number");
+        String editMobNo = "9876543210";
+
+        list = mapper.readValue(new File("/home/admin141/IdeaProjects/AddressBook/src/main/resources/" + name + ".json"),
+                new TypeReference<List<Person>>() {
+                });
+        for (i = 0; i < list.size(); i++) {
+            Person temp = list.get(i);
+            if (temp.getFirstName().equals(editName) && temp.getMobNo().equals(editMobNo)) {
+                int choice1 = 0;
+                do {
+                    System.out.println("Choose Which Operation You Want to Perform");
+                    System.out.println("1.FirstName");
+                    System.out.println("2.LastName");
+                    System.out.println("3.MobNo");
+                    System.out.println("4.City");
+                    System.out.println("5.State");
+                    System.out.println("6.Zip");
+                    System.out.println("7.Exit");
+                    choice1 = 4;
+                    switch (choice1) {
+
+                        case 1:
+                            System.out.println("Enter User First Name");
+                            String firstName = "";
+                            list.get(i).setFirstName(firstName);
+                            choice1 = 7;
+                            break;
+
+                        case 2:
+                            System.out.println("Enter User Last Name");
+                            String lastName = "";
+                            list.get(i).setLastName(lastName);
+                            choice1 = 7;
+                            break;
+
+                        case 3:
+
+                            System.out.println("Enter User Mobile Number");
+                            String mobNo = "";
+                            list.get(i).setMobNo(mobNo);
+                            choice1 = 7;
+                            break;
+
+                        case 4:
+
+                            System.out.println("Enter City");
+                            String city = "punjab";
+                            list.get(i).address.city = city;
+                            choice1 = 7;
+                            break;
+
+                        case 5:
+                            System.out.println("Enter state");
+                            String state = "";
+                            list.get(i).address.state = state;
+                            choice1 = 7;
+                            break;
+
+                        case 6:
+                            System.out.println("Enter zip");
+                            String zip = "";
+                            list.get(i).address.zip = zip;
+                            choice1 = 7;
+                            break;
+
+                        case 7:
+                            System.out.println("Exit");
+                            break;
+                        default:
+                            System.out.println("Invalid Input");
+                    }
+                } while (choice1 != 7);
+            }
+        }
+
+        if (i > list.size()) {
+            System.out.println("Person Not Exist");
+            return false;
+        }
+        System.out.println("edited successful");
+        mapper.writeValue(new File("/home/admin141/IdeaProjects/AddressBook/src/main/resources/" + name + ".json"), list);
+        return true;
+    }
+
+}
+
+==========================================================================================================================
+2-------------3
+
+
+package com.bridgelabz.utility;
+
+import com.bridgelabz.model.Address;
+import com.bridgelabz.model.Person;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.simple.JSONArray;
+import org.json.simple.parser.JSONParser;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class Utility {
+    static Scanner sc = new Scanner(System.in);
+
+    public static int inputNumber() {
+        return sc.nextInt();
+    }
+
+    public static String inputString() {
+        return sc.next();
+    }
+
+    static List<Person> list = new ArrayList<>();
+    static Person person = new Person();
+    static Address address = new Address();
+    static ObjectMapper mapper = new ObjectMapper();
+
+    public static boolean operation(List<Person> receiveList, String name) throws IOException {
+        int choice = 0;
+        Boolean result = null;
+        do {
+            System.out.println("***********Operation of User***********");
+            System.out.println("1.Add\n2.Edit\n3.Delete\n9.Exit");
+            choice = 3;
+            switch (choice) {
+                case 1:
+                    System.out.println("Add USer");
+                    result = addUser(name);
+                    choice = 9;
+                    break;
+                case 2:
+                    System.out.println("Edit USer");
+                    result = editUser(name);
+                    choice = 9;
+                    break;
+                case 3:
+                    System.out.println("Delete USer");
+                    result = deleteUser(name);
+                    choice = 9;
+                    break;
+
+                case 9:
+                    System.out.println("Exiting");
+
+                    break;
+                default:
+                    System.out.println("Invalid Input Please Enter Correct Choice");
+            }
+
+        } while (choice != 9);
+        return result;
+    }
+
+    private static Boolean addUser(String name) {
+        String firstName = "Jack";
+        String lastName = "Sparrow";
+        String mobNo = "9876543210";
+        String city = "NewYork";
+        String state = "Uk";
+        String zip = "101010";
+
+        person.setFirstName(firstName);
+        person.setLastName(lastName);
+        person.setMobNo(mobNo);
+        address.setCity(city);
+        address.setState(state);
+        address.setState(zip);
+
+
+        Person temp = new Person(firstName, lastName, mobNo, new Address(city, zip, state));
+        list.add(temp);
+        ObjectMapper mapper = new ObjectMapper();
+        String json = "[";
+        JSONParser parser = new JSONParser();
+        try {
+            File file = new File("/home/admin141/IdeaProjects/AddressBook/src/main/resources/" + name + ".json");
+            // if the file is empty
+            if (file.length() == 0) {
+                json = json + mapper.writeValueAsString(temp) + "]";
+            }
+            {
+                // read the data from file
+                Object object = parser.parse(new FileReader("/home/admin141/IdeaProjects/AddressBook/src/main/resources/" + name + ".json"));
+                JSONArray array = new JSONArray();
+                array = (JSONArray) object;
+                for (int j = 0; j < array.size(); j++) {
+                    json = json + array.get(j) + ",";
+                    // System.out.println(json);
+                }
+                json = json + mapper.writeValueAsString(temp) + "]";
+                System.out.println(json);
+            }
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        } catch (org.json.simple.parser.ParseException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            FileWriter file = new FileWriter(
+                    "/home/admin141/IdeaProjects/AddressBook/src/main/resources/" + name + ".json");
+            file.write(json);
+            file.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    private static Boolean editUser(String name) throws IOException {
+        int i = 0;
+        String editName = "Jack";
+        //System.out.println("Enter User Edited Mobile Number");
+        String editMobNo = "9876543210";
+
+        list = mapper.readValue(new File("/home/admin141/IdeaProjects/AddressBook/src/main/resources/" + name + ".json"),
+                new TypeReference<List<Person>>() {
+                });
+        for (i = 0; i < list.size(); i++) {
+            Person temp = list.get(i);
+            if (temp.getFirstName().equals(editName) && temp.getMobNo().equals(editMobNo)) {
+                int choice1 = 0;
+                do {
+                    System.out.println("Choose Which Operation You Want to Perform");
+                    System.out.println("1.FirstName");
+                    System.out.println("2.LastName");
+                    System.out.println("3.MobNo");
+                    System.out.println("4.City");
+                    System.out.println("5.State");
+                    System.out.println("6.Zip");
+                    System.out.println("7.Exit");
+                    choice1 = 4;
+                    switch (choice1) {
+
+                        case 1:
+                            System.out.println("Enter User First Name");
+                            String firstName = "";
+                            list.get(i).setFirstName(firstName);
+                            choice1 = 7;
+                            break;
+
+                        case 2:
+                            System.out.println("Enter User Last Name");
+                            String lastName = "";
+                            list.get(i).setLastName(lastName);
+                            choice1 = 7;
+                            break;
+
+                        case 3:
+
+                            System.out.println("Enter User Mobile Number");
+                            String mobNo = "";
+                            list.get(i).setMobNo(mobNo);
+                            choice1 = 7;
+                            break;
+
+                        case 4:
+
+                            System.out.println("Enter City");
+                            String city = "punjab";
+                            list.get(i).address.city = city;
+                            choice1 = 7;
+                            break;
+
+                        case 5:
+                            System.out.println("Enter state");
+                            String state = "";
+                            list.get(i).address.state = state;
+                            choice1 = 7;
+                            break;
+
+                        case 6:
+                            System.out.println("Enter zip");
+                            String zip = "";
+                            list.get(i).address.zip = zip;
+                            choice1 = 7;
+                            break;
+
+                        case 7:
+                            System.out.println("Exit");
+                            break;
+                        default:
+                            System.out.println("Invalid Input");
+                    }
+                } while (choice1 != 7);
+            }
+        }
+
+        if (i > list.size()) {
+            System.out.println("Person Not Exist");
+            return false;
+        }
+        System.out.println("edited successful");
+        mapper.writeValue(new File("/home/admin141/IdeaProjects/AddressBook/src/main/resources/" + name + ".json"), list);
+        return true;
+    }
+
+
+    private static Boolean deleteUser(String name) throws IOException {
+        list = mapper.readValue(new File("/home/admin141/IdeaProjects/AddressBook/src/main/resources/" + name + ".json"),
+                new TypeReference<List<Person>>() {
+                });
+        //System.out.println("Enter User by Mobile Number");
+        String deleteMobNo = "0123456789";
+
+        for (int i = 0; i < list.size(); i++) {
+            Person temp = list.get(i);
+            if (temp.getMobNo().equals(deleteMobNo)) {
+                list.remove(i);
+            } else {
+                System.out.println("Invalid mobNo");
+                return false;
+            }
+        }
+        mapper.writeValue(new File("/home/admin141/IdeaProjects/AddressBook/src/main/resources/" + name + ".json"), list);
+        return true;
+    }
+}
+
+

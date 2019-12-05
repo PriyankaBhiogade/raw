@@ -1,0 +1,98 @@
+test
+1scommi
+
+
+package com.bridgelabz;
+
+import com.bridgelabz.model.Address;
+import com.bridgelabz.service.AddressBook;
+import org.junit.Assert;
+import org.junit.Test;
+
+public class AddressBookTest {
+    AddressBook addressBook = new AddressBook();
+
+    @Test
+    public void givenMessageShould_CreateNewPersonInAddressBook_returnTrue() {
+        Boolean result = addressBook.create("Ravi");
+        Assert.assertTrue(result);
+    }
+  @Test
+    public void givenMessageShould_CreateNewPerson_NameIsAlreadyPresent_InAddressBook_returnFasle() {
+        Boolean result = addressBook.create("Ravi");
+        Assert.assertFalse(result);
+    }
+
+    @Test
+    public void givenMessageShould_CreateNewPerson_NameIsNull_InAddressBook_returnFasle() {
+        Boolean result = addressBook.create("");
+        Assert.assertFalse(result);
+    }
+}
+
+===================================================================================
+================================================================================================================
+2nd
+  
+    //--------------------create test cases------------
+
+    @Test
+    public void givenMessageShould_OpenAddressBook_WithJsonFileName_returnTrue() {
+        Boolean result = addressBook.open("Ravi");
+        Assert.assertTrue(result);
+    }
+
+    @Test
+    public void givenMessageShould_OpenAddressBook_FileNameNotPresent_returnTrue() {
+        Boolean result = addressBook.open("raj");
+        Assert.assertFalse(result);
+    }
+
+    @Test
+    public void givenMessageShould_OpenAddressBook_FileNameNull_returnTrue() {
+        Boolean result = addressBook.open("");
+        Assert.assertFalse(result);
+    }
+
+}
+
+======================================================================================
+2---1
+
+ //--------------open file test cases----------------------
+    @Test
+    public void givenMessageShould_AddPersonIn_AddressBook__returnTrue() {
+        Boolean result = addressBook.open("Ravi");
+        Assert.assertTrue(result);
+    }
+
+    @Test
+    public void givenMessageShould_AddPersonIn_AddressBook_WhenImproperName_returnFalse() {
+        Boolean result = addressBook.open("Raviiii");
+        Assert.assertFalse(result);
+}
+
+=======================================================================================
+2---2
+ @Test
+    public void givenMessageShould_EditPersonIn_AddressBook_WhenImproperName_returnTrue() {
+        Boolean result = addressBook.open("Ravi");
+        Assert.assertTrue(result);
+}
+===============================================================================
+2----3
+@Test
+    public void givenMessageShould_DeletePersonFrom_AddressBook_WhenProperMobNo_returnTrue() {
+        Boolean result = addressBook.open("Ravi");
+        Assert.assertTrue(result);
+    }
+
+    @Test
+    public void givenMessageShould_DeletePersonFrom_AddressBook_WhenWrongMobNo_returnTrue() {
+        Boolean result = addressBook.open("Ravi");
+Assert.assertFalse(result);
+}
+}
+============================================================================================
+=======================================================================================
+

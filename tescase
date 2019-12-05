@@ -1,0 +1,23 @@
+test
+1s
+
+
+package com.bridgelabz;
+
+import com.bridgelabz.model.Address;
+import com.bridgelabz.service.AddressBook;
+import org.junit.Assert;
+import org.junit.Test;
+
+public class AddressBookTest {
+    AddressBook addressBook = new AddressBook();
+
+    @Test
+    public void givenMessageShould_CreateNewPersonInAddressBook_returnTrue() {
+        Boolean result = addressBook.create("Ravi");
+        Assert.assertTrue(result);
+    }
+}
+
+-------------------------------------------------------
+2nd
